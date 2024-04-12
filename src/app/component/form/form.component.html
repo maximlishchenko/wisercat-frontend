@@ -1,0 +1,90 @@
+<div class="form border border-secondary mt-5 position-relative">
+    <div [ngSwitch]="showMessage">
+        <div *ngSwitchCase="'success'">
+            <app-message
+                type="success"
+                text="Form submitted successfully!"
+            />
+        </div>
+        <div *ngSwitchCase="'error'">
+            <app-message
+                type="error"
+                text="Error while submiting the form!"
+            />
+        </div>
+        <div *ngSwitchCase="'info'">
+            <app-message
+                type="info"
+                text="Form reset successfully!"
+            />
+        </div>
+        <div *ngSwitchDefault></div>
+    </div>
+    
+    <form class="mt-1" [formGroup]="dummyForm">
+        <div *ngFor="let control of controls">
+            <div class="row mb-2">
+                <label [for]="control.name" class="col-sm-4 col-form-label">{{control.label}}:</label>
+                <div class="col-sm-8">
+                    <input 
+                        [type]="control.type"
+                        [id]="control.name" 
+                        [formControlName]="control.name"
+                        class="form-control"
+                        (focus)="onFocus($event)"
+                        (blur)="onBlur($event)"
+                        required
+                    >
+                </div>
+    
+                <div
+                    *ngIf="
+                        dummyForm.get(control.name)?.errors && 
+                        (dummyForm.get(control.name)?.dirty || dummyForm.get(control.name)?.touched) && 
+                        inputFocused.get(control.name)
+                    "
+                    class="alert alert-warning mt-2"
+                    role="alert"
+                >
+                    <div *ngIf="dummyForm.get(control.name)?.errors?.['required']">
+                        {{control.label}} is required.
+                    </div>
+                    <div *ngIf="dummyForm.get(control.name)?.errors?.['minlength']">
+                        {{control.label}} must be at least {{dummyForm.get(control.name)?.errors?.['minlength'].requiredLength}} characters long.
+                    </div>
+                    <div *ngIf="dummyForm.get(control.name)?.errors?.['maxlength']">
+                        {{control.label}} must be at most {{dummyForm.get(control.name)?.errors?.['maxlength'].requiredLength}} characters long.
+                    </div>
+                    <div *ngIf="dummyForm.get(control.name)?.errors?.['nameNotCapitalized']">
+                        {{control.label}} should be capitalized.
+                    </div>
+                    <div *ngIf="dummyForm.get(control.name)?.errors?.['notFormattedName']">
+                        {{control.label}} should be formatted correctly.
+                    </div>
+                    <div *ngIf="dummyForm.get(control.name)?.errors?.['email']">
+                        {{control.label}} should be valid.
+                    </div>
+                    <div *ngIf="dummyForm.get(control.name)?.errors?.['min']">
+                        Value must be bigger than or equal to {{dummyForm.get(control.name)?.errors?.['min'].min}}.
+                    </div>
+                    <div *ngIf="dummyForm.get(control.name)?.errors?.['max']">
+                        Value must be less than or equal to {{dummyForm.get(control.name)?.errors?.['max'].max}}.
+                    </div>
+                    <div *ngIf="dummyForm.get(control.name)?.errors?.['notANumber']">
+                        Value needs to be a number.
+                    </div>
+                    <div *ngIf="dummyForm.get(control.name)?.errors?.['invalidDecimalPlaces']">
+                        Invalid amount of numbers after decimal point.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="buttons d-flex gap-3 position-absolute bottom-0 start-50 translate-middle mb-3">
+            <button class="btn btn-primary" (click)="submitApplication()">Submit</button>
+            <button class="btn btn-secondary" (click)="resetApplication()">Reset</button>
+        </div>
+    </form>
+</div>
+
+
