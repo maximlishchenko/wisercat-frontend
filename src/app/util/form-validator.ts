@@ -8,7 +8,7 @@ export class CustomDummyValidator extends Validators {
     
     public capitalizedNameValidator(): ValidatorFn {
         return (control: AbstractControl): ValidationErrors | null => {
-            const firstCapitalizedReg = /[A-Z]/;
+            const firstCapitalizedReg = /[A-ZÄÖÜÕ]/;
             
             const input = <string> control.value;
     
